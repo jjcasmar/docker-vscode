@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BIN=/usr/share/codium/bin/codium
+BIN=/usr/share/code/bin/code
 
 dbus-launch ${BIN} \
   --no-sandbox \

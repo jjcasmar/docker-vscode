@@ -4,19 +4,18 @@ FROM ghcr.io/linuxserver/baseimage-selkies:debiantrixie
 
 # set version label
 ARG BUILD_DATE
-ARG CODIUM_VERSION
 ARG VERSION
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="thelamer"
 
 # title
-ENV TITLE=VSCodium
+ENV TITLE=VSCode
 
 RUN \
   echo "**** add icon ****" && \
   curl -o \
     /usr/share/selkies/www/icon.png \
-    https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/vscodium-icon.png && \
+    https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/code-server-icon.png && \
   echo "**** install packages ****" && \
   apt-get update && \
   apt-get install --no-install-recommends -y \
@@ -27,15 +26,11 @@ RUN \
     gnome-keyring \
     ssh-askpass \
     stterm && \
-  echo "**** install codium ****" && \
-  if [ -z ${CODIUM_VERSION+x} ]; then \
-    CODIUM_VERSION=$(curl -sX GET "https://api.github.com/repos/VSCodium/vscodium/releases/latest" \
-    | awk '/tag_name/{print $4;exit}' FS='[""]'); \
-  fi && \
+  echo "**** install vscode ****" && \
   curl -o \
-    /tmp/codium.deb -L \
-    "https://github.com/VSCodium/vscodium/releases/download/${CODIUM_VERSION}/codium_${CODIUM_VERSION}_amd64.deb" && \
-  apt install --no-install-recommends -y /tmp/codium.deb && \
+    /tmp/vscode.deb -L \
+    "https://update.code.visualstudio.com/latest/linux-deb-x64/stable" && \
+  apt install --no-install-recommends -y /tmp/vscode.deb && \
   echo "**** container tweaks ****" && \
   mv \
     /usr/bin/chromium \
